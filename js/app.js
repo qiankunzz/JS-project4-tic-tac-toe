@@ -5,12 +5,13 @@ var winningCondition = {
   // assign values from 1 to 9 to all the 9 buttons respectively
   // Set an array of 9 arrays to define all the winning combinations
   winningCombo: [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]],
-  // counting array for both players counting their scores in each of the winningCombo.
-  // if only one score reaches 3, then the player wins the game.
-  countingO: [0,0,0,0,0,0,0,0],
-  countingX: [0,0,0,0,0,0,0,0],
-  movePlayer1: true,
-  moveCount: 0,
+
+  // // counting array for both players counting their scores in each of the winningCombo.
+  // // if only one score reaches 3, then the player wins the game.
+  // countingO: [0,0,0,0,0,0,0,0],
+  // countingX: [0,0,0,0,0,0,0,0],
+  // movePlayer1: true,
+  // moveCount: 0,
 }
 
 // Reset the game to the orginal
