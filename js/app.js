@@ -9,7 +9,8 @@ var winningCondition = {
   // if only one score reaches 3, then the player wins the game.
   countingO: [0,0,0,0,0,0,0,0],
   countingX: [0,0,0,0,0,0,0,0],
-  MovePlayerO: true,
+  movePlayer1: true,
+  moveCount: 0,
 }
 
 // Reset the game to the orginal
@@ -17,14 +18,15 @@ function gameReset() {
   // everything to inital state
   winningCondition.countingO = [0,0,0,0,0,0,0,0];
   winningCondition.countingX = [0,0,0,0,0,0,0,0];
-  winningCondition.MovePlayerO = true;
+  winningCondition.movePlayer1 = true;
   buttons.removeClass("box-filled-1");
   buttons.removeClass("box-filled-2");
   $("#finish").removeClass("screen-win-one");
   $("#finish").removeClass("screen-win-two");
   $(".players").removeClass("active");
   $("#player1").addClass("active", 500);
-  buttons.css("background-image","")
+  buttons.css("background-image","");
+  $("div header p.message").empty();
 
   // Bind each button on the board with event listeners;
   for (n = 0; n < buttons.length; n++) {
@@ -59,17 +61,15 @@ function gameReset() {
 // Disable click after one click (questions!!!!)
 function disableClick(n) {
   return function(){
-    console.log(n);
     buttons.eq(n).off("click");
     buttons.eq(n).off('mouseenter mouseleave')
   }
 }
 
-
 // Set hover image, depending on the state of the player
 function setHoverImage(n) {
   return function(){
-    if (winningCondition.MovePlayerO === true) {
+    if (winningCondition.movePlayer1 === true) {
       buttons.eq(n).css("background-image","url('img/o.svg')");
     } else {
       buttons.eq(n).css("background-image","url('img/x.svg')");
@@ -82,21 +82,17 @@ function setHoverImageOut(n) {
   }
 }
 
-
-
-
 // Set active color for the board and the players
 function setActiveColor(n) {
   return function() {
     $(".players").removeClass("active");
-    if (winningCondition.MovePlayerO === true) {
+    if (winningCondition.movePlayer1 === true) {
       buttons.eq(n).addClass("box-filled-1");           // board body
       $("#player2").addClass("active", 500);            // player header
     } else {
       buttons.eq(n).addClass("box-filled-2");           // board body
       $("#player1").addClass("active", 500);            // player header
     }
-    buttons.eq(n).unbind("click",setActiveColor);
   }
 }
 
@@ -105,21 +101,20 @@ function setActiveColor(n) {
 function createClickButtonMove(n) {
   return function clickButton(){
     //  When Player1 is playing
-    if (winningCondition.MovePlayerO === true) {
+    winningCondition.moveCount++;
+    if (winningCondition.movePlayer1 === true) {
       for (i = 0; i < winningCondition.winningCombo.length; i++) {
         if (winningCondition.winningCombo[i].includes(n+1)) {
           winningCondition.countingO[i]++;
         }
       }
-      winningCondition.MovePlayerO = false;
+      winningCondition.movePlayer1 = false;
       console.log("Player O " + Math.max(...winningCondition.countingO));
       if (Math.max(...winningCondition.countingO) === 3) {
-        gameReset();
         $("div header p.message").append("Winner!");
         $("#finish").addClass("screen-win-one").show();
       }
-    }
-    else
+    } else
     //  When Player2 is playing (the code here is not DRY enough)
     {
       for (i = 0; i < winningCondition.winningCombo.length; i++) {
@@ -127,19 +122,23 @@ function createClickButtonMove(n) {
           winningCondition.countingX[i]++;
         }
       }
-      winningCondition.MovePlayerO = true;
+      winningCondition.movePlayer1 = true;
       console.log("Player X " + Math.max(...winningCondition.countingX));
       if (Math.max(...winningCondition.countingX) === 3) {
-        gameReset();
         $("div header p.message").append("Winner!");
         $("#finish").addClass("screen-win-two").show();
       }
     }
-    // Test
-    buttons.eq(n).off("click",buttons.eq(n),createClickButtonMove);
+    // Show tie screen
+    // if (winningCondition.moveCount === 9)
+    // {
+    //   $("div header p.message").append("It's a tie!");
+    //   $("#finish").addClass("screen-win-draw").show();
+    // }
   }
 }
 
+// execute gameReset everytime the page loads
 gameReset();
 
 
@@ -148,6 +147,7 @@ $(".button").click(function(){
   $("#finish").hide();
   $("#start").hide();
   $("#board").show();
+  gameReset();
 });
 
 
