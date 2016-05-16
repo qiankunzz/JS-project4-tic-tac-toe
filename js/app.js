@@ -14,6 +14,7 @@ var winningCondition = {
 
 // Reset the game to the orginal
 function gameReset() {
+  // everything to inital state
   winningCondition.countingO = [0,0,0,0,0,0,0,0];
   winningCondition.countingX = [0,0,0,0,0,0,0,0];
   winningCondition.MovePlayerO = true;
@@ -23,18 +24,28 @@ function gameReset() {
   $("#finish").removeClass("screen-win-two");
   $(".players").removeClass("active");
   $("#player1").addClass("active", 500);
+  buttons.css("background-image","")
+
+  // Bind each button on the board with event listeners;
+  for (n = 0; n < buttons.length; n++) {
+    buttons.eq(n).click(setActiveColor(n)).click(createClickButtonMove(n)).click(disableClick(n));
+  //  buttons.eq(n).click(createClickButtonMove(n));
+    buttons.eq(n).hover(
+      setHoverImage(n),setHoverImageOut(n)
+    );
+  //  buttons.eq(n).click(disableClick(n));
+  }
 }
 
 
-// Bind each button on the board with event listeners;
-for (n = 0; n < buttons.length; n++) {
-  buttons.eq(n).click(setActiveColor(n)).click(createClickButtonMove(n));
-//  buttons.eq(n).click(createClickButtonMove(n));
-  buttons.eq(n).hover(
-    setHoverImage(n),setHoverImageOut(n)
-  );
-//  buttons.eq(n).click(disableClick(n));
-}
+// for (n = 0; n < buttons.length; n++) {
+//   buttons.eq(n).click(setActiveColor(n)).click(createClickButtonMove(n)).click(disableClick(n));
+// //  buttons.eq(n).click(createClickButtonMove(n));
+//   buttons.eq(n).hover(
+//     setHoverImage(n),setHoverImageOut(n)
+//   );
+// //  buttons.eq(n).click(disableClick(n));
+// }
 
 // for (j = 0; j < buttons.length; j++) {
 //   buttons.eq(j).click(function(){
@@ -44,15 +55,14 @@ for (n = 0; n < buttons.length; n++) {
 //   });
 // }
 
-// Disable click after one click
+
+// Disable click after one click (questions!!!!)
 function disableClick(n) {
-//  return function(){
+  return function(){
     console.log(n);
-    var
-    buttons.eq(n).off("click",buttons.eq(n),createClickButtonMove);
-    buttons.eq(n).unbind("click",setActiveColor);
-    buttons.eq(n).unbind("hover",setHoverImage);
-//  }
+    buttons.eq(n).off("click");
+    buttons.eq(n).off('mouseenter mouseleave')
+  }
 }
 
 
@@ -130,8 +140,7 @@ function createClickButtonMove(n) {
   }
 }
 
-// Bind hover events
-
+gameReset();
 
 
 // Finish Screen Property
