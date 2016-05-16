@@ -19,6 +19,7 @@ function gameReset() {
   winningCondition.countingO = [0,0,0,0,0,0,0,0];
   winningCondition.countingX = [0,0,0,0,0,0,0,0];
   winningCondition.movePlayer1 = true;
+  winningCondition.moveCount = 0;
   buttons.removeClass("box-filled-1");
   buttons.removeClass("box-filled-2");
   $("#finish").removeClass("screen-win-one");
@@ -109,7 +110,7 @@ function createClickButtonMove(n) {
         }
       }
       winningCondition.movePlayer1 = false;
-      console.log("Player O " + Math.max(...winningCondition.countingO));
+  //    console.log("Player 1 " + Math.max(...winningCondition.countingO));
       if (Math.max(...winningCondition.countingO) === 3) {
         $("div header p.message").append("Winner!");
         $("#finish").addClass("screen-win-one").show();
@@ -123,23 +124,24 @@ function createClickButtonMove(n) {
         }
       }
       winningCondition.movePlayer1 = true;
-      console.log("Player X " + Math.max(...winningCondition.countingX));
+    //  console.log("Player 2 " + Math.max(...winningCondition.countingX));
       if (Math.max(...winningCondition.countingX) === 3) {
         $("div header p.message").append("Winner!");
         $("#finish").addClass("screen-win-two").show();
       }
     }
     // Show tie screen
-    // if (winningCondition.moveCount === 9)
-    // {
-    //   $("div header p.message").append("It's a tie!");
-    //   $("#finish").addClass("screen-win-draw").show();
-    // }
+    if (winningCondition.moveCount === 9)
+    {
+      $("div header p.message").append("It's a tie!");
+      $("#finish").addClass("screen-win-draw").show();
+    }
+    console.log(winningCondition.movePlayer1);
   }
 }
 
 // execute gameReset everytime the page loads
-gameReset();
+// gameReset();
 
 
 // Finish Screen Property
