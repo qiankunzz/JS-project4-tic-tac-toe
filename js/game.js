@@ -1,3 +1,4 @@
+// This file is currently not working
 //!function(){
 $("#board").hide();
 $("#finish").hide();
