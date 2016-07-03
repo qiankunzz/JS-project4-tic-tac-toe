@@ -26,6 +26,9 @@ function buttonsReset() {
   buttons.eq(8).click(function(){game.buttonClick(8);game.disableClick(8)});
   buttons.eq(8).hover(function(){game.setHoverImage(8)},function(){game.setHoverImageOut(8)});
 
+  buttons.click(function(){
+    computer();
+  })
   // for (n = 0; n < buttons.length; n++) {
   // // bind the click event with
   // //  1. function to record the progress of the game: createClickButtonMove
@@ -37,9 +40,11 @@ function buttonsReset() {
   // }
 };
 
+var player1Name,player2Name;
+var player1 = new Player(player1Name);
+var player2 = new Player(player2Name);
 var game = new Game();
-var player1 = new Player(player1);
-var player2 = new Player(player2);
+
 
 $(".button").click(function(){
   $("#finish").hide();
@@ -47,4 +52,7 @@ $(".button").click(function(){
   $("#board").show();
   game.reset();
   buttonsReset();
+  player1.name  = $("#player1Name").val();
+  player2.name  = $("#player2Name").val();
+
 });

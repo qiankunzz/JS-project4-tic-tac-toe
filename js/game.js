@@ -2,7 +2,9 @@
 function Game() {
   this.winningCombo = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]],
   this.movesCounting = 0,
-  this.movePlayer1 = true
+  this.movePlayer1 = true,
+  this.moved = [],
+  this.available = []
 };
 
 Game.prototype.play = function(move,player) {
@@ -16,6 +18,13 @@ Game.prototype.play = function(move,player) {
   }
   game.movePlayer1 = !game.movePlayer1;
   game.movesCounting++;
+  game.moved.push(move);
+  game.available = [];
+  for (j = 0; j < 9; j++) {
+    if (!game.moved.includes(j)) {
+      game.available.push(j);
+    }
+  }
 };
 
 // function to render all the element accordingly
@@ -46,10 +55,10 @@ Game.prototype.setHoverImageOut = function(n) {
 
 Game.prototype.isWinning = function() {
   if (Math.max(...player1.counting) === 3) {
-    $("div header p.message").append("Winner!");
+    $("div header p.message").append(player1.name + " is the Winner!");
     $("#finish").addClass("screen-win-one").show();
   } else if (Math.max(...player2.counting) === 3) {
-    $("div header p.message").append("Winner!");
+    $("div header p.message").append(player2.name + " is the Winner!");
     $("#finish").addClass("screen-win-two").show();
   } else if (game.movesCounting === 9) {
     $("div header p.message").append("It's a tie!");
@@ -73,7 +82,6 @@ Game.prototype.disableClick = function(move) {
     buttons.eq(move).off('mouseenter mouseleave');
 };
 
-
 Game.prototype.reset = function() {
   player1.counting = [0,0,0,0,0,0,0,0];
   player2.counting = [0,0,0,0,0,0,0,0];
@@ -87,4 +95,5 @@ Game.prototype.reset = function() {
   $("#player1").addClass("active", 500);
   buttons.css("background-image","");
   $("div header p.message").empty();
+  game.moved = []
 };
